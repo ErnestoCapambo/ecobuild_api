@@ -42,7 +42,7 @@ export class UpdateUserService {
                 const updatedUser = await prisma.user.findUnique({ where: { id: user_id } })
                 if (updatedUser) {                    
                     const { password: _, ...updatedUserWithoutPassword } = updatedUser
-                    return {user: updatedUserWithoutPassword}
+                    return updatedUserWithoutPassword
                 }
 
 
