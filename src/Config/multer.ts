@@ -1,9 +1,15 @@
 import multer, { diskStorage } from "multer";
 import { resolve } from "path";
+import fs from "fs"
 
 
 // Define o diretório onde os arquivos serão armazenados
 const uploadsDest = resolve(__dirname, "../Files");
+const existPath = fs.existsSync(uploadsDest)
+
+if (!existPath) {
+    fs.mkdirSync(uploadsDest)
+}
 
 const storage = diskStorage({
     destination: (req, file, cb) => {
