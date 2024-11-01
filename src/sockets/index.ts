@@ -12,7 +12,7 @@ class SocketConfig {
     initialize(server: HttpServer) {
         this.io = new SocketIOServer(server, {
             cors: {
-                origin: `${process.env.APP_URL ? process.env.APP_URL :"http://localhost:5173"}`,
+                origin: "*",
                 methods: ["GET", "POST", "PUT", "DELETE"],
                 credentials: true,
             }
