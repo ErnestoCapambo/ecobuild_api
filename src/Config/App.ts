@@ -51,7 +51,7 @@ export class Application {
     middlewares() {
 
         this.app.use(cors({
-            origin: "http://localhost:5173", // Permite rigens
+            origin: `${process.env.APP_URL ? process.env.APP_URL :"http://localhost:5173"}`, // Permite rigens
             methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
             allowedHeaders: ["Content-Type", "Authorization"], // Headers permitidos
             // credentials: true
