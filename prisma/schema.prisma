@@ -57,6 +57,7 @@ model Notification {
 
 model Residue {
   id          String @id @default(uuid())
+  created_at  DateTime @default(now())
   name        String
   type        String
   description String

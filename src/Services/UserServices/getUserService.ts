@@ -15,9 +15,7 @@ export class GetUserService{
         }
 
         const user = prisma.user.findUnique({
-            where: {
-                id
-            }
+            where: { id }
         })
 
         if(!user){
