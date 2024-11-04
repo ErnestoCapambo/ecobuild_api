@@ -4,7 +4,7 @@ import { GetUserService } from "../UserServices/getUserService";
 
 
 type ResidueTypeRequest = {
-    name: string;
+    condition: string;
     type: string;
     description: string;
     file_path: string;
@@ -13,7 +13,7 @@ type ResidueTypeRequest = {
 }
 
 export class CreateResidueService{
-    async execute({ name, type, description, file_name, file_path, user_id }:ResidueTypeRequest): Promise<object | any> {
+    async execute({ condition, type, description, file_name, file_path, user_id }:ResidueTypeRequest): Promise<object | any> {
         const userService = new GetUserService()
         const notificationService = new CreateNotificationService()
 
@@ -22,7 +22,7 @@ export class CreateResidueService{
         if(user){
             const newResidue =  await prisma.residue.create({
                 data: {
-                    name,
+                    condition,
                     type,
                     description,
                     file_name,

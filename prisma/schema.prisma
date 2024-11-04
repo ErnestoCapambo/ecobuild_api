@@ -56,9 +56,9 @@ model Notification {
 }
 
 model Residue {
-  id          String @id @default(uuid())
+  id          String   @id @default(uuid())
   created_at  DateTime @default(now())
-  name        String
+  condition   String  @default("null")
   type        String
   description String
   file_path   String?

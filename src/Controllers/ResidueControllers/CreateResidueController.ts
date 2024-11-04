@@ -5,12 +5,16 @@ import { CreateResidueService } from "../../Services/ResidueServices/CreateResid
 export class CreateResidueController{
     async handle(request: Request, response: Response) {
         const { userId } = request.params
-        const { name, type, description } = request.body
+        const { condition, type, description } = request.body
 
         const service = new CreateResidueService()
 
+        if(!request.file){
+            return response.status(400).json({error: "Imagem de resíduo obrigatório."})
+        }
+
         const result = await service.execute({
-            name,
+            condition,
             type,
             description,
             user_id: userId,
