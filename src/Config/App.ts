@@ -51,7 +51,7 @@ export class Application {
     middlewares() {
 
         this.app.use(cors({
-            origin: "*", // Permite origens
+            origin: ['https://ecobuild.onrender.com', 'http://localhost:5173'], // Permite origens
             methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
             allowedHeaders: ["Content-Type", "Authorization"], // Headers permitidos
             // credentials: true
