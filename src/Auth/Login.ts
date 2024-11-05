@@ -11,7 +11,6 @@ export class Login{
         const service = new GetUserByEmailAndPassword()
 
         const result = await service.execute({email: email})
-
         
         if (result == null) return response.status(404).json({error: "Email ou senha incorretos."})
 

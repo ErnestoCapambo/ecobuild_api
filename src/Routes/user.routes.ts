@@ -12,7 +12,7 @@ import { RemoveAdminRoleToUserController } from "../Controllers/RoleControllers/
 
 const routes = Router()
 
-routes.post("/create", upload.single("photo"), new CreateUserController().handle);
+routes.post("/create/", upload.single("photo"), new CreateUserController().handle);
 
 
 routes.get("/:userId?", new GetUserController().handle);
