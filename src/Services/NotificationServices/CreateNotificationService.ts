@@ -5,14 +5,14 @@ import { GetUserService } from "../UserServices/getUserService";
 
 type NotificationTypeRequest = {
     description: string;
-    user_id: string
+    sender_id: string
 }
 
 export class CreateNotificationService {
-    async execute({ description, user_id }: NotificationTypeRequest): Promise<void> {
+    async execute({ description, sender_id }: NotificationTypeRequest): Promise<void> {
         const userService = new GetUserService()
         
-        const sender = await userService.execute({id: user_id})
+        const sender = await userService.execute({id: sender_id})
         const allUsers = await userService.execute({})
         
         if(!sender) return
@@ -21,7 +21,7 @@ export class CreateNotificationService {
 
             if(sender.id != receiver.id) {    
                 const newNotification = await prisma.notification.create({
-                    data: { description, receiver_id: receiver.id }
+                    data: { description, receiver_id: receiver.id, sender_id: sender.id }
                 })
     
                 new SocketConfig().sendNotificationToConnectedUsers(newNotification)

@@ -12,5 +12,4 @@ routes.get("/unreaded-count/:userId", new GetCountUserUnreadedNotificationContro
 routes.get("/:userId", new GetNotificationController().handle)
 
 
-
 export { routes }

@@ -32,8 +32,8 @@ export class CreateResidueService{
             })
 
             await notificationService.execute({
-                description: `${user.first_name} ${user.last_name}, publicou um novo resíduo: ${newResidue.description}.`,
-                user_id: user.id
+                description: `publicou um novo resíduo.`,
+                sender_id: user.id
             })
 
             return newResidue

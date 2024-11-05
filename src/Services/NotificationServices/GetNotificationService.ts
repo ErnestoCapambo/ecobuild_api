@@ -12,7 +12,10 @@ export class GetNotificationService {
         const user = await userService.execute({id: user_id})
 
         const userNotifications = await prisma.notification.findMany({
-            where: { receiver_id: user.id },          
+            where: { receiver_id: user.id },
+            include: {
+                sender: true
+            }
         })
 
         return userNotifications

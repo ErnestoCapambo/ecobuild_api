@@ -10,8 +10,8 @@ const routes = Router()
 
 routes.post("/create/:userId", upload.single("photo"), new CreateResidueController().handle)
 
-routes.get("/:userId", new GetUserResiduesController().handle)
+routes.get("/list-all", new ListResiduesController().handle)
 
-routes.get("/list", new ListResiduesController().handle)
+routes.get("/:userId", new GetUserResiduesController().handle)
 
 export { routes }

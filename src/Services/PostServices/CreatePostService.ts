@@ -22,7 +22,7 @@ export class CreatePostService{
 
             await notificationService.execute({
                 description: `${user.first_name} ${user.last_name} Publicou um novo conteúdo: ${newPost.description}`,
-                user_id: author_id
+                sender_id: author_id
             })
         }
     }

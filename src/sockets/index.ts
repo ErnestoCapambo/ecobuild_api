@@ -43,7 +43,7 @@ class SocketConfig {
 
     sendNotificationToConnectedUsers(new_notification: object){
         if (this.io) {
-            this.io.emit("notification", new_notification)
+            this.io.to(this.socket?.id ? this.socket.id : '').emit("notification", new_notification)
         }
     }
 }
