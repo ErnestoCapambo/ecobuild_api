@@ -15,6 +15,9 @@ export class GetNotificationService {
             where: { receiver_id: user.id },
             include: {
                 sender: true
+            },
+            orderBy: {
+                created_at: "asc"
             }
         })
 

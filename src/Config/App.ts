@@ -1,114 +1,104 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import { Server as HttpServer, createServer } from "node:http";
 import createHttpError, { HttpError } from "http-errors";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 import { routes } from "../Routes/index";
 import { deleteFile } from "../helpers/deleteFile";
 import SocketConfig from "../sockets";
-import cors from "cors"
+import cors from "cors";
 import path from "node:path";
 
-
-dotenv.config()
+dotenv.config();
 
 export class Application {
     public app: Express;
     public server: HttpServer;
-    private port: number
+    private port: number;
+    private socketConfig: SocketConfig;
 
     constructor() {
         this.app = express();
         this.server = createServer(this.app);
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
-        this.middlewares()
-        this.routes()
-        this.sockets()
-        this.port = Number(process.env.PORT) || 4422
+        this.middlewares();
+        this.routes();
+
+        // Inicialize o SocketConfig diretamente no construtor
+        this.socketConfig = new SocketConfig(); 
+        this.initializeSockets();
+
+        this.port = Number(process.env.PORT) || 4422;
     }
 
     routes() {
-        this.app.use(routes)
+        this.app.use(routes);
 
-        // Default Route
+        // Rota padrão
         this.app.get("/", (Request, Response) => {
-            Response.send("WELCOME TO EcoBuild API.")
-        })
+            Response.send("WELCOME TO EcoBuild API.");
+        });
     }
 
     start() {
         this.server.listen(this.port, () => {
-            console.log(`Servidor rodando na porta ${this.port}`)
-        })
+            console.log(`Servidor rodando na porta ${this.port}`);
+        });
     }
 
-    sockets() {
-        const socket = new SocketConfig()
-        socket.initialize(this.server)
+    initializeSockets() {
+        this.socketConfig.initialize(this.server);
+    }
 
+    sendNotifs(data: object) {
+        this.socketConfig.sendNotificationToConnectedUsers(data);
     }
 
     middlewares() {
-
         this.app.use(cors({
-            origin: "*", // Permite origens
-            methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
-            allowedHeaders: ["Content-Type", "Authorization"], // Headers permitidos
-            // credentials: true
-        }))
+            origin: "*",
+            methods: ["GET", "POST", "PUT", "DELETE"],
+            allowedHeaders: ["Content-Type", "Authorization"],
+        }));
 
-        // Servindo arquivos estaticos 
+        // Servindo arquivos estáticos
         this.app.use('/files', express.static(path.join(__dirname, '../Files')));
 
         // Tratamento de Erros
-        this.app.use(
-            async(
-                error: HttpError,
-                request: Request,
-                response: Response,
-                next: NextFunction
-            ) => {
+        this.app.use(async (
+            error: HttpError,
+            request: Request,
+            response: Response,
+            next: NextFunction
+        ) => {
+            response.status(error.status || 500);
 
-                // Seta o HTTP Status Code
-                response.status(error.status || 500);
+            // Deletando arquivos em caso de erro
+            if (error.status != 200 && request.file) {
+                await deleteFile(String(request.file?.filename));
+            }
 
-                // Deletando arquivos no caso de Houver
-                // algum erro durante a requisição
-                if (error.status != 200 && request.file){
-                    await deleteFile(String(request.file?.filename));
-                }
+            if (request.files) {
+                Object.values(request.files).forEach(file => {
+                    if (file[0]) deleteFile(file[0].filename);
+                    if (file) deleteFile(file.filename);
+                });
+            }
 
-                // Deletando a lista de arquivos no caso de Houver
-                // algum erro durante a requisição
-                if (request.files) {
-                    Object.values(request.files).forEach(file => {
-                        if (file[0])
-                            deleteFile(file[0].filename);
-
-                        if (file)
-                            deleteFile(file.filename);
-                    });
-                }
-
-                // Erros internos (500)
-                if (!error.status) {
-                    console.error(error.stack)
-                    return response.json({
-                        status: error.status,
-                        message: 'Houve um erro interno, tente novamente.',
-                        stack: error.stack,
-                    });
-                }
-
-                // Restantes Erros (400, 404...)
+            if (!error.status) {
+                console.error(error.stack);
                 return response.json({
                     status: error.status,
-                    message: error.message,
+                    message: 'Houve um erro interno, tente novamente.',
                     stack: error.stack,
                 });
             }
 
-        );
-        
+            return response.json({
+                status: error.status,
+                message: error.message,
+                stack: error.stack,
+            });
+        });
     }
 }
