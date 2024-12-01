@@ -4,6 +4,7 @@ import { CreateResidueController } from "../Controllers/ResidueControllers/Creat
 import upload from "../Config/multer";
 import { ListResiduesController } from "../Controllers/ResidueControllers/ListResiduesController";
 import { GetUserResiduesController } from "../Controllers/ResidueControllers/GetUserResiduesController";
+import { DeleteResidueController } from "../Controllers/ResidueControllers/DeleteResidueController";
 
 
 const routes = Router()
@@ -13,5 +14,7 @@ routes.post("/create/:userId", upload.single("photo"), new CreateResidueControll
 routes.get("/list-all", new ListResiduesController().handle)
 
 routes.get("/:userId", new GetUserResiduesController().handle)
+
+routes.delete("/:userId/:residueId", new DeleteResidueController().handle)
 
 export { routes }

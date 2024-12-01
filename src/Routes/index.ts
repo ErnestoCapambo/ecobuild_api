@@ -5,6 +5,7 @@ import { routes as authRoutes } from "./auth.routes"
 import { routes as notificationRoutes } from "./notification.routes"
 import { routes as postRoutes } from "./post.routes"
 import { routes as residueRoutes } from "./residue.routes"
+import { routes as testimonialRoutes } from "./testimonial.routes"
 
 
 const routes = Router()
@@ -21,5 +22,6 @@ routes.use("/posts", postRoutes)
 
 routes.use("/residue", residueRoutes)
 
+routes.use("/testimonial", testimonialRoutes)
 
 export { routes }

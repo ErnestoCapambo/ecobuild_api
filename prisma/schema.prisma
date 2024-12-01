@@ -30,12 +30,20 @@ model User {
   is_super         Boolean   @default(false)
   is_admin         Boolean   @default(false)
 
-  posts        Post[]
-  Residue      Residue[]
+  posts   Post[]
+  Residue Residue[]
 
   // Relações distintas para as notificações enviadas e recebidas
   sent_notifications     Notification[] @relation("SentNotifications")
   received_notifications Notification[] @relation("ReceivedNotificaions")
+  Testimonial            Testimonial[]
+}
+
+model Testimonial {
+  id          String @id @default(uuid())
+  description String
+  author_id   String
+  author      User   @relation(fields: [author_id], references: [id])
 }
 
 model Post {
