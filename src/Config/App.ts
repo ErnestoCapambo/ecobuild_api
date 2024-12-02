@@ -25,7 +25,7 @@ export class Application {
         this.routes();
 
         // Inicialize o SocketConfig diretamente no construtor
-        this.socketConfig = new SocketConfig(); 
+        this.socketConfig = new SocketConfig();
         this.initializeSockets();
 
         this.port = Number(process.env.PORT) || 4422;

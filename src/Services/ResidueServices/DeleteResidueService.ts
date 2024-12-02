@@ -1,3 +1,4 @@
+import { deleteFile } from "../../helpers/deleteFile";
 import { prisma } from "../../PrismaHandler";
 
 
@@ -12,5 +13,14 @@ export class DeleteResidueService {
         await prisma.residue.delete({
             where: { id: residueId, userId: userId }
         })
+
+        const residue = await prisma.residue.findUnique({
+            where: { id: residueId, userId: userId }
+        })
+
+        if (residue?.file_name) {
+            await deleteFile(residue.file_name)
+        }
+
     }
 }
