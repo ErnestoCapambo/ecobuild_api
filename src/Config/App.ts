@@ -14,7 +14,6 @@ export class Application {
     public app: Express;
     public server: HttpServer;
     private port: number;
-    private socketConfig: SocketConfig;
 
     constructor() {
         this.app = express();
@@ -25,7 +24,6 @@ export class Application {
         this.routes();
 
         // Inicialize o SocketConfig diretamente no construtor
-        this.socketConfig = new SocketConfig();
         this.initializeSockets();
 
         this.port = Number(process.env.PORT) || 4422;
@@ -47,11 +45,7 @@ export class Application {
     }
 
     initializeSockets() {
-        this.socketConfig.initialize(this.server);
-    }
-
-    sendNotifs(data: object) {
-        this.socketConfig.sendNotificationToConnectedUsers(data);
+        SocketConfig.initialize(this.server);
     }
 
     middlewares() {

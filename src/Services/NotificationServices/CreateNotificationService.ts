@@ -1,4 +1,4 @@
-import { Application } from "../../Config/App";
+import SocketConfig from "./../../sockets/index"
 import { prisma } from "../../PrismaHandler";
 import { GetUserService } from "../UserServices/getUserService";
 
@@ -11,7 +11,6 @@ type NotificationTypeRequest = {
 export class CreateNotificationService {
     async execute({ description, sender_id }: NotificationTypeRequest): Promise<void> {
         const userService = new GetUserService()
-        const application = new Application()
         
         const sender = await userService.execute({id: sender_id})
         const allUsers = await userService.execute({})
@@ -25,7 +24,7 @@ export class CreateNotificationService {
                     data: { description, receiver_id: receiver.id, sender_id: sender.id }
                 })
     
-                application.sendNotifs(newNotification)
+                SocketConfig.sendNotificationToConnectedUsers(newNotification)
             }
         }
     }

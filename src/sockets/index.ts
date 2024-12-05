@@ -4,15 +4,18 @@ import createHttpError from "http-errors";
 
 class SocketConfig {
     private io: SocketIOServer | undefined;
-    public socket: Socket | undefined;
+    // public socket: Socket | undefined;
     private connectedSockets: Map<string, Socket>; // Map para gerenciar vários sockets
 
     constructor() {
-        this.connectedSockets = new Map();
-        this.socket;
-    }
+        this.connectedSockets = new Map();    }
 
     initialize(server: HttpServer) {
+        if (this.io){
+            console.warn("Socket.io já foi inicializado.")
+            return
+        }
+
         this.io = new SocketIOServer(server, {
             cors: {
                 origin: "*",
@@ -23,7 +26,6 @@ class SocketConfig {
 
         this.io.on("connection", async (socket: Socket) => {
             this.handleConnection(socket);
-            this.socket = socket
         });
     }
 
@@ -46,9 +48,9 @@ class SocketConfig {
     }
 
     sendNotificationToConnectedUsers(new_notification: object) {
-        if (this.socket) {
+        if (this.io) {
             console.log("Enviando notificação para todos os clientes conectados");
-            this.socket.emit("notification", new_notification);
+            this.io.emit("notification", new_notification);
         } else {
             console.error("Socket.IO não foi inicializado. Notificação não enviada.");
         }
@@ -65,4 +67,4 @@ class SocketConfig {
     }
 }
 
-export default SocketConfig;
+export default new SocketConfig();
