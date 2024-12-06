@@ -31,6 +31,11 @@ export class Application {
 
     routes() {
         this.app.use(routes);
+        this.app.use(express.static(path.join(__dirname, "build")));
+
+        this.app.get("*", (Request, Response) => {
+            Response.sendFile(path.join(__dirname, "build", "index.html"));
+        });
 
         // Rota padrão
         this.app.get("/", (Request, Response) => {
