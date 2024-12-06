@@ -31,10 +31,10 @@ export class Application {
 
     routes() {
         this.app.use(routes);
-        this.app.use(express.static(path.join(__dirname, "build")));
+        this.app.use(express.static(path.join(__dirname, "dist")));
 
         this.app.get("*", (Request, Response) => {
-            Response.sendFile(path.join(__dirname, "build", "index.html"));
+            Response.sendFile(path.join(__dirname, "dist", "index.html"));
         });
 
         // Rota padrão
