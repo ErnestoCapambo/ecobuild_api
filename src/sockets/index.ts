@@ -49,7 +49,7 @@ class SocketConfig {
 
     sendNotificationToConnectedUsers(new_notification: object) {
         if (this.io) {
-            console.log("Enviando notificação para todos os clientes conectados");
+            // console.log("Enviando notificação para todos os clientes conectados");
             this.io.emit("notification", new_notification);
         } else {
             console.error("Socket.IO não foi inicializado. Notificação não enviada.");
@@ -59,10 +59,17 @@ class SocketConfig {
     sendNotificationToSpecificUser(socketId: string, notification: object) {
         const socket = this.connectedSockets.get(socketId);
         if (socket) {
-            console.log(`Enviando notificação para o cliente ${socketId}`);
+            // console.log(`Enviando notificação para o cliente ${socketId}`);
             socket.emit("notification", notification);
         } else {
             console.error(`Cliente com socket ID ${socketId} não encontrado ou desconectado.`);
+        }
+    }
+
+    sendTestimonial(new_testimonial: object) {
+        if (this.io){
+            console.log("Depoimento criado.")
+            this.io.emit("testimonial", new_testimonial)
         }
     }
 }
