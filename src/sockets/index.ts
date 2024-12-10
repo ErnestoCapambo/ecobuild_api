@@ -56,6 +56,14 @@ class SocketConfig {
         }
     }
 
+    updateTestimonials(newTestimonial: object) {
+        if (this.io) {
+            this.io.emit("testimonials", newTestimonial);
+        } else {
+            console.error("Socket.IO não foi inicializado. Notificação não enviada.");
+        }
+    }
+
     sendNotificationToSpecificUser(socketId: string, notification: object) {
         const socket = this.connectedSockets.get(socketId);
         if (socket) {

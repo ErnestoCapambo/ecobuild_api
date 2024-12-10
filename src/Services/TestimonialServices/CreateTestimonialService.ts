@@ -1,4 +1,5 @@
 import { prisma } from "../../PrismaHandler";
+import SocketConfig from "./../../sockets/index"
 
 
 type TestimonialTypeRequest = {
@@ -15,6 +16,9 @@ export class CreateTestimonialService{
                 description: description
             }
         })
+
+        SocketConfig.updateTestimonials(newTestimonial)
+
 
         return newTestimonial
     }
