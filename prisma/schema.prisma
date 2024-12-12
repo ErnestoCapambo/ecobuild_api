@@ -124,7 +124,7 @@ model Chat {
   created_at DateTime @default(now())
   name       String   @unique @default("Ecobuild")
   is_company Boolean  @default(false)
-  user_ids   String[]
+  user_ids   String[] @default([])
 
   Message     Message[]
   User        User[]
