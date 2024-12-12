@@ -37,6 +37,10 @@ model User {
   sent_notifications     Notification[] @relation("SentNotifications")
   received_notifications Notification[] @relation("ReceivedNotificaions")
   Testimonial            Testimonial[]
+  Message                Message[]
+  Chat                   Chat?          @relation(fields: [chatId], references: [id])
+  chatId                 String?
+  SeenMessages           SeenMessage[]
 }
 
 model Testimonial {
@@ -86,4 +90,43 @@ model Residue {
 model Visit {
   id         String   @id @default(uuid())
   created_at DateTime @default(now())
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  content    String
+
+  sender_id String
+  sender    User   @relation(fields: [sender_id], references: [id])
+
+  chat_id String
+  chat    Chat   @relation(fields: [chat_id], references: [id])
+
+  SeenMessages SeenMessage[]
+}
+
+model SeenMessage {
+  id     Int     @id @default(autoincrement())
+  status Boolean @default(false)
+
+  message_id Int
+  user_id    String
+  chat_id    String
+
+  message Message @relation(fields: [message_id], references: [id])
+  chat    Chat    @relation(fields: [chat_id], references: [id])
+  user    User    @relation(fields: [user_id], references: [id])
+}
+
+model Chat {
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
+  name       String   @unique @default("Ecobuild")
+  is_company Boolean  @default(false)
+  user_ids   String[]
+
+  Message     Message[]
+  User        User[]
+  SeenMessage SeenMessage[]
 }

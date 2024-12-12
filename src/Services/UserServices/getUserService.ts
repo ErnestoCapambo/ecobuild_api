@@ -7,7 +7,7 @@ type UserRequestType = {
 }
 
 export class GetUserService{
-    async execute({ id }: UserRequestType): Promise<User | any>{
+    async execute({ id }: UserRequestType): Promise<User | any[] | any>{
         if(!id){
             const allUsers = await prisma.user.findMany()
 

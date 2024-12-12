@@ -1,14 +1,16 @@
 import { Server as SocketIOServer, Socket } from "socket.io";
 import { Server as HttpServer } from 'http';
 import createHttpError from "http-errors";
+3
 
 class SocketConfig {
     private io: SocketIOServer | undefined;
-    // public socket: Socket | undefined;
+    public _socket: Socket | undefined;
     private connectedSockets: Map<string, Socket>; // Map para gerenciar vários sockets
 
     constructor() {
-        this.connectedSockets = new Map();    }
+        this.connectedSockets = new Map();    
+    }
 
     initialize(server: HttpServer) {
         if (this.io){
@@ -30,12 +32,13 @@ class SocketConfig {
     }
 
     private handleConnection(socket: Socket) {
-        console.log("Cliente conectado:", socket.id);
+        // console.log("Cliente conectado:", socket.id);
         this.connectedSockets.set(socket.id, socket); // Adiciona o socket ao Map
+        this._socket = socket
 
         // Evento de desconexão
         socket.on("disconnect", () => {
-            console.log("Cliente desconectado:", socket.id);
+            // console.log("Cliente desconectado:", socket.id);
             this.connectedSockets.delete(socket.id); // Remove o socket ao desconectar
         });
     }
@@ -78,6 +81,16 @@ class SocketConfig {
         if (this.io){
             console.log("Depoimento criado.")
             this.io.emit("testimonial", new_testimonial)
+        }
+    }
+
+    sendMessageToConectedUsers(new_message: object) {
+        // const socket = this.connectedSockets.get();
+        
+        if (this.io){
+            const sockets = this.io.sockets
+
+            sockets.emit("message", new_message)
         }
     }
 }
