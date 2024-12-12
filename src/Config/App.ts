@@ -1,14 +1,12 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import { Server as HttpServer, createServer } from "node:http";
 import createHttpError, { HttpError } from "http-errors";
-import { checkIfCompanyChatAlreadyExist } from "../helpers/checkIfCompanyChatAlreadyExist";
 import dotenv from "dotenv";
 import { routes } from "../Routes/index";
 import { deleteFile } from "../helpers/deleteFile";
 import SocketConfig from "../sockets";
 import cors from "cors";
 import path from "node:path";
-import { CreateChatServiceWithMemberService } from "../Services/MessageServices/ChatServices/CreateChatServiceWithMemberService";
 
 dotenv.config();
 
@@ -49,13 +47,6 @@ export class Application {
         this.server.listen(this.port, () => {
             console.log(`Servidor rodando na porta ${this.port}`);
         });
-
-        const exist = await checkIfCompanyChatAlreadyExist()
-
-        if(exist === false){
-            const chatWithMemberService = new CreateChatServiceWithMemberService()
-            await chatWithMemberService.execute()
-        }
     }
 
     initializeSockets() {
