@@ -63,6 +63,10 @@ export class Application {
         // Servindo arquivos estáticos
         this.app.use('/files', express.static(path.join(__dirname, '../Files')));
 
+        this.app.get('/*', (req: Request, res: Response) => {
+            res.sendFile(path.join(__dirname, 'dist', 'index.html'))
+        })
+
         // Tratamento de Erros
         this.app.use(async (
             error: HttpError,
