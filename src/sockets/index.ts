@@ -93,6 +93,26 @@ class SocketConfig {
             sockets.emit("message", new_message)
         }
     }
+
+    login(user_id: string) {
+        // const socket = this.connectedSockets.get();
+        
+        if (this.io){
+            const sockets = this.io.sockets
+
+            sockets.emit("login", user_id)
+        }
+    }
+
+    logOut(user_id: string) {
+        // const socket = this.connectedSockets.get();
+        
+        if (this.io){
+            const sockets = this.io.sockets
+
+            sockets.emit("logout", user_id)
+        }
+    }
 }
 
 export default new SocketConfig();

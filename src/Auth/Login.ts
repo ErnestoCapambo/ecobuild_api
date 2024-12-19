@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { GetUserByEmailAndPassword } from "../Services/UserServices/GetUserByEmailAndPassword";
 import { decodePassword } from "../helpers/decodePassword";
 import { generateToken } from "../middlewares/genereteToken";
+import { LoginService } from "../Services/AuthServices/LoginService";
+import SocketConfig from "./../sockets/index"
 
 
 export class Login{
@@ -20,10 +22,15 @@ export class Login{
 
         const {password: _,  ...userWithoutPassWord} = result
 
+        const loginService = new LoginService()
+
+        await loginService.execute(userWithoutPassWord.id)
+
         const resp = {
             user: userWithoutPassWord,
             token: await generateToken({user_id: result.id})
         }
+        SocketConfig.login(userWithoutPassWord.id)
 
         return response.json(resp)
     }
