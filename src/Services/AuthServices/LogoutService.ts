@@ -1,5 +1,5 @@
 import { prisma } from "../../PrismaHandler";
-import SocketConfig from "./../../sockets/index"
+import SocketConfig from "./../../sockets/index";
 
 
 export class LogoutService {

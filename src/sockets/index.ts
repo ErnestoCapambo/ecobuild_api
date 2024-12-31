@@ -1,7 +1,7 @@
 import { Server as SocketIOServer, Socket } from "socket.io";
 import { Server as HttpServer } from 'http';
 import createHttpError from "http-errors";
-3
+
 
 class SocketConfig {
     private io: SocketIOServer | undefined;
