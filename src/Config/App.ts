@@ -7,6 +7,7 @@ import { deleteFile } from "../helpers/deleteFile";
 import SocketConfig from "../sockets";
 import cors from "cors";
 import path from "node:path";
+import { CheckDefaultUserToCreate } from "../Services/UserServices/DefaultUser/create-default-user";
 
 dotenv.config();
 
@@ -47,6 +48,8 @@ export class Application {
         this.server.listen(this.port, () => {
             console.log(`Servidor rodando na porta ${this.port}`);
         });
+
+        await CheckDefaultUserToCreate()
     }
 
     initializeSockets() {
