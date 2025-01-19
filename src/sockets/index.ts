@@ -113,6 +113,30 @@ class SocketConfig {
             sockets.emit("logout", user_id)
         }
     }
+
+    removeRole(user: object) {
+        if (this.io){
+            const sockets = this.io.sockets
+
+            sockets.emit("remove_role", user)
+        }
+    }
+
+    addAdminRole(user: object) {
+        if (this.io){
+            const sockets = this.io.sockets
+
+            sockets.emit("add_admin_role", user)
+        }
+    }
+
+    deleteUser(user_id: string) {
+        if (this.io){
+            const sockets = this.io.sockets
+
+            sockets.emit("delete_user", user_id)
+        }
+    }
 }
 
 export default new SocketConfig();

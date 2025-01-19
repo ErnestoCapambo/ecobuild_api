@@ -9,7 +9,6 @@ type UpdateUserRequest = Partial<Omit<UserTypeRequesst, "password">>
 export class UpdateUserService {
     async execute({ user_id, age, email, file_path, firstName, lastName, location, phone, file_name }: UpdateUserRequest): Promise<any> {
 
-
         try {
             if (user_id) {
                 const user = await prisma.user.findUnique({ where: { id: user_id } })
@@ -38,13 +37,11 @@ export class UpdateUserService {
                     }
                 })
 
-
                 const updatedUser = await prisma.user.findUnique({ where: { id: user_id } })
                 if (updatedUser) {                    
                     const { password: _, ...updatedUserWithoutPassword } = updatedUser
                     return updatedUserWithoutPassword
                 }
-
 
             } else {
                 return createHttpError(400, "Por favor, informe o id do Usuário.")

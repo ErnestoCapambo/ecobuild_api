@@ -7,7 +7,7 @@ export class LogoutService {
 
         await prisma.user.update({
             where: { id: user_id },
-            data: { status: false }
+            data: { status: false, last_time_online: new Date() }
         })
 
         SocketConfig.logOut(user_id)

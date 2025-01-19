@@ -9,7 +9,23 @@ type UserRequestType = {
 export class GetUserService{
     async execute({ id }: UserRequestType): Promise<User | any[] | any>{
         if(!id){
-            const allUsers = await prisma.user.findMany()
+            const allUsers = await prisma.user.findMany({
+                orderBy: {
+                    first_name: "asc"
+                },
+                select: {
+                    id: true,
+                    first_name: true,
+                    last_name: true,
+                    status: true,
+                    is_admin: true,
+                    is_super: true,
+                    phone_number: true,
+                    email: true,
+                    file_name: true,
+                    file_path: true,
+                }
+            })
 
             return allUsers
         }

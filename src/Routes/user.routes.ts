@@ -8,6 +8,7 @@ import { DeleteUserController } from "../Controllers/UserControllers/deleteUserC
 import { UpdateUserController } from "../Controllers/UserControllers/UpdateUserController";
 import { AddAdminRoleToUserController } from "../Controllers/RoleControllers/AddAdminRoleToUserController";
 import { RemoveAdminRoleToUserController } from "../Controllers/RoleControllers/RemoveAdminRoleToUserController";
+import { CountClientController } from "../Controllers/UserControllers/CountClientController";
 
 
 const routes = Router()
@@ -15,14 +16,16 @@ const routes = Router()
 routes.post("/create/", upload.single("photo"), new CreateUserController().handle);
 
 
+routes.get("/count-clients", new CountClientController().handle);
+
 routes.get("/:userId?", new GetUserController().handle);
 
-routes.delete("/delete/:userId", ensuredAuthenticated(), new DeleteUserController().handle)
+routes.delete("/delete/:admin_id/:userId", new DeleteUserController().handle);
 
-routes.put("/update/:userId", upload.single("photo"), ensuredAuthenticated(), new UpdateUserController().handle)
+routes.put("/update/:userId", upload.single("photo"), ensuredAuthenticated(), new UpdateUserController().handle);
 
-routes.put("/role-add/:admin_id", ensuredAuthenticated(), new AddAdminRoleToUserController().handle)
+routes.put("/role-add/:admin_id/:userId", new AddAdminRoleToUserController().handle);
 
-routes.put("/role-remove/:admin_id", ensuredAuthenticated(), new RemoveAdminRoleToUserController().handle)
+routes.put("/role-remove/:admin_id/:userId", new RemoveAdminRoleToUserController().handle);
 
-export { routes }
+export { routes };
