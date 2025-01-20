@@ -137,6 +137,14 @@ class SocketConfig {
             sockets.emit("delete_user", user_id)
         }
     }
+
+    createUser(user: object) {
+        if (this.io){
+            const sockets = this.io.sockets
+
+            sockets.emit("create_user", user)
+        }
+    }
 }
 
 export default new SocketConfig();

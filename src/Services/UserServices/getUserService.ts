@@ -24,6 +24,7 @@ export class GetUserService{
                     email: true,
                     file_name: true,
                     file_path: true,
+                    age: true,
                 }
             })
 
@@ -31,7 +32,20 @@ export class GetUserService{
         }
 
         const user = prisma.user.findUnique({
-            where: { id }
+            where: { id },
+            select: {
+                id: true,
+                first_name: true,
+                last_name: true,
+                status: true,
+                is_admin: true,
+                is_super: true,
+                phone_number: true,
+                email: true,
+                file_name: true,
+                file_path: true,
+                age: true,
+            }
         })
 
         if(!user){

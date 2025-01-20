@@ -1,5 +1,5 @@
 import { prisma } from "../../PrismaHandler";
-
+import SocketConfig from "../../sockets/index";
 
 
 export class LoginService {
@@ -9,5 +9,7 @@ export class LoginService {
             where: { id: user_id },
             data: { status: true }
         })
+
+        SocketConfig.login(user_id)
     }
 }

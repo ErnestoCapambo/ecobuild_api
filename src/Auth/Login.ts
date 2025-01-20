@@ -3,14 +3,14 @@ import { GetUserByEmailAndPassword } from "../Services/UserServices/GetUserByEma
 import { decodePassword } from "../helpers/decodePassword";
 import { generateToken } from "../middlewares/genereteToken";
 import { LoginService } from "../Services/AuthServices/LoginService";
-import SocketConfig from "./../sockets/index"
 
 
 export class Login{
     async handle(request: Request, response: Response){
         const { email, password } = request.body
-
+        
         const service = new GetUserByEmailAndPassword()
+        const loginService = new LoginService()
 
         const result = await service.execute({email: email})
         
@@ -22,7 +22,6 @@ export class Login{
 
         const {password: _,  ...userWithoutPassWord} = result
 
-        const loginService = new LoginService()
 
         await loginService.execute(userWithoutPassWord.id)
 
@@ -30,7 +29,6 @@ export class Login{
             user: userWithoutPassWord,
             token: await generateToken({user_id: result.id})
         }
-        SocketConfig.login(userWithoutPassWord.id)
 
         return response.json(resp)
     }

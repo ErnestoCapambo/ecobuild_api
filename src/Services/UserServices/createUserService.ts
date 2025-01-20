@@ -4,6 +4,8 @@ import { generateToken } from "../../middlewares/genereteToken";
 import { prisma } from "../../PrismaHandler";
 import { AddUserToCompanyChatService } from "../MessageServices/ChatServices/AddUserToCompanyChatService";
 import { CreateChatService } from "../MessageServices/ChatServices/CreateChatServiceWithMemberService";
+import SocketConfig from "../../sockets/index";
+import { GetUserService } from "./getUserService";
 
 
 export type UserTypeRequesst = {
@@ -46,9 +48,11 @@ export class CreateUserService {
             await new AddUserToCompanyChatService().execute(user.id)
         }
 
+        const userService = await new GetUserService().execute({id: user.id})
 
         const token = await generateToken({user_id: user.id})
 
+        SocketConfig.createUser(userService)
         
         return {user:user, token: token}
     }
