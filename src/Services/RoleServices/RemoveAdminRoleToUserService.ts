@@ -1,6 +1,7 @@
 import { prisma } from "../../PrismaHandler";
 import { GetUserService } from "../UserServices/getUserService";
 import SocketConfig from "../../sockets/index" ;
+import createHttpError from "http-errors";
 
 
 type RomoveRoleTypeRequest = {
@@ -29,6 +30,8 @@ export class RemoveAdminRoleToUserService {
 
             SocketConfig.removeRole(_user)
 
+        } else {
+            throw createHttpError(401, "Usuário não autorizado.")
         }
     }
 }

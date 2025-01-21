@@ -9,6 +9,8 @@ import { UpdateUserController } from "../Controllers/UserControllers/UpdateUserC
 import { AddAdminRoleToUserController } from "../Controllers/RoleControllers/AddAdminRoleToUserController";
 import { RemoveAdminRoleToUserController } from "../Controllers/RoleControllers/RemoveAdminRoleToUserController";
 import { CountClientController } from "../Controllers/UserControllers/CountClientController";
+import { listUserController } from "../Controllers/UserControllers/listUserController";
+import { CountUserOnlineController } from "../Controllers/UserControllers/CountUserOnlineController";
 
 
 const routes = Router()
@@ -18,7 +20,11 @@ routes.post("/create/", upload.single("photo"), new CreateUserController().handl
 
 routes.get("/count-clients", new CountClientController().handle);
 
+routes.get("/online-count", new CountUserOnlineController().handle);
+
 routes.get("/:userId?", new GetUserController().handle);
+
+routes.get("/all-list", new listUserController().handle);
 
 routes.delete("/delete/:admin_id/:userId", new DeleteUserController().handle);
 
