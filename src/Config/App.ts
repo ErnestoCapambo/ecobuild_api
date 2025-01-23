@@ -64,7 +64,7 @@ export class Application {
         }));
 
         // Servindo arquivos estáticos
-        this.app.use('/files', express.static(path.join(__dirname, '../Files')));
+        this.app.use('/files', express.static(path.resolve(__dirname, '..', 'Files')));
 
         // this.app.get('/*', (req: Request, res: Response) => {
         //     res.sendFile(path.join(__dirname, 'dist', 'index.html'))

@@ -17,7 +17,7 @@ export class CreateNotificationService {
         
         if(!sender) return
 
-        for (const receiver of allUsers) {
+        for (const receiver of allUsers.users) {
 
             if(sender.id != receiver.id) {    
                 const newNotification = await prisma.notification.create({

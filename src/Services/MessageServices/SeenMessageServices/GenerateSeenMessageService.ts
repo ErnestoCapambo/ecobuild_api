@@ -1,5 +1,4 @@
 import { prisma } from "../../../PrismaHandler";
-import { GetChatService } from "../ChatServices/GetChatService";
 
 
 type SeenMessageTypeRequest = {

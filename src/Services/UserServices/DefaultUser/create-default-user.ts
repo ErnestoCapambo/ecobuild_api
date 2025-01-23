@@ -1,4 +1,5 @@
 import { prisma } from "../../../PrismaHandler";
+import { AddUserToCompanyChatService } from "../../MessageServices/ChatServices/AddUserToCompanyChatService";
 import { AddRoleByDefaultService } from "../../RoleServices/AddRoleByDefaultService";
 
 
@@ -12,8 +13,9 @@ export async function CheckDefaultUserToCreate (): Promise<void> {
         location: "Viana",
         password: "1234",
         phone_number: "934531597",
-        status: true,
+        status: false,
         is_admin: true,
+        is_super: true
     }
 
     const userExist = await prisma.user.findUnique({
@@ -27,9 +29,11 @@ export async function CheckDefaultUserToCreate (): Promise<void> {
 
         await Addrole.execute(userExist.id)
     } else {
-        await prisma.user.create({
+        const _user = await prisma.user.create({
             data: user
         })
+
+        new AddUserToCompanyChatService().execute(_user.id)
     }
     
 }
