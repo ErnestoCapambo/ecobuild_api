@@ -1,3 +1,4 @@
+import { hashPassword } from "../../../helpers/hashPassword";
 import { prisma } from "../../../PrismaHandler";
 import { AddUserToCompanyChatService } from "../../MessageServices/ChatServices/AddUserToCompanyChatService";
 import { AddRoleByDefaultService } from "../../RoleServices/AddRoleByDefaultService";
@@ -11,7 +12,7 @@ export async function CheckDefaultUserToCreate (): Promise<void> {
         email: "ronaldodsantosrag@gmail.com",
         age: 22,
         location: "Viana",
-        password: "1234",
+        password: await hashPassword("1234"),
         phone_number: "934531597",
         status: false,
         is_admin: true,

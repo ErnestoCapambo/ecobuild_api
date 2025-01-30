@@ -1,6 +1,6 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import { Server as HttpServer, createServer } from "node:http";
-import createHttpError, { HttpError } from "http-errors";
+import { HttpError } from "http-errors";
 import dotenv from "dotenv";
 import { routes } from "../Routes/index";
 import { deleteFile } from "../helpers/deleteFile";
@@ -80,9 +80,8 @@ export class Application {
             response.status(error.status || 500);
 
             // Deletando arquivos em caso de erro
-            if (error.status != 200 && request.file) {
+            if (request.file)
                 await deleteFile(String(request.file?.filename));
-            }
 
             if (request.files) {
                 Object.values(request.files).forEach(file => {

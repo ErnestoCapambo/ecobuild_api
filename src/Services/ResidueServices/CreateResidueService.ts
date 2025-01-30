@@ -33,7 +33,8 @@ export class CreateResidueService{
 
             await notificationService.execute({
                 description: `publicou um novo resíduo.`,
-                sender_id: user.id
+                sender_id: user.id,
+                residue_id: newResidue.id,
             })
 
             return newResidue
